@@ -46,8 +46,8 @@ router.get('/handle/:handle', (req, res) => {
             res.status(404).json(errors); // not found 404 error
          }
          res.json(profile);
-      });
-   .catch (err => res.status(404).json(err));
+      })
+      .catch(err => res.status(404).json(err));
 });
 
 // @route   GET api/profile/user/:user_id
@@ -65,8 +65,8 @@ router.get('/user/:user_id', (req, res) => {
             res.status(404).json(errors); // not found 404 error
          }
          res.json(profile);
-      });
-   .catch (err => res.status(404).json(err));
+      })
+      .catch(err => res.status(404).json(err));
 });
 
 // @route   POST api/profile
