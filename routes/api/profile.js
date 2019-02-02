@@ -216,10 +216,58 @@ router.post(
                current: req.body.current,
                description: req.body.description
             }
-            // Add created exp object to exp array of Profile
+            // Add created edu object to edu array of Profile
             profile.education.unshift(newExp);
             profile.save().then(profile => res.json(profile));
          })
 })
+
+// @route   DELETE api/profile/experience/:exp_id
+// @desc    Delete experience from profile 
+// @access  Private
+router.delete(
+   '/experience/:exp_id',
+   passport.authenticate('jwt', { session: false }), 
+   (req, res) => {
+      // req.user.id comes from the token
+      Profile.findOne({ user: req.user.id })
+         .then(profile => {
+         // Get remove index
+         const removeIndex = profile.experience
+            .map(item => item.id)
+            // gets correct experience to delete by accessing exp_id in req.params
+            .indexOf(req.params.exp_id);
+
+            // Splice out of array
+            profile.experience.splice(removeIndex, 1);
+            // Save
+            profile.save().then(profile => res.json(profile));
+         })
+         .catch(err => res.status(404).json(err));
+});
+
+// @route   DELETE api/profile/education/:edu_id
+// @desc    Delete education from profile 
+// @access  Private
+router.delete(
+   '/education/:edu_id',
+   passport.authenticate('jwt', { session: false }), 
+   (req, res) => {
+      // req.user.id comes from the token
+      Profile.findOne({ user: req.user.id })
+         .then(profile => {
+         // Get remove index
+         const removeIndex = profile.education
+            .map(item => item.id)
+            // gets correct education to delete by accessing exp_id in req.params
+            .indexOf(req.params.edu_id);
+
+            // Splice out of array
+            profile.education.splice(removeIndex, 1);
+            // Save
+            profile.save().then(profile => res.json(profile));
+         })
+         .catch(err => res.status(404).json(err));
+});
 
 module.exports = router;
