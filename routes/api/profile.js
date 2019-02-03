@@ -10,7 +10,7 @@ const validateEducationInput = require('../../validation/education');
 
 // import Profile Model
 const Profile = require('../../models/Profile');
-// import User Profile
+// import User Model
 const User = require('../../models/User');
 
 // @route   GET api/profile/test
@@ -268,6 +268,22 @@ router.delete(
             profile.save().then(profile => res.json(profile));
          })
          .catch(err => res.status(404).json(err));
+});
+
+// @route   DELETE api/profile/education/:edu_id
+// @desc    Delete user and profile 
+// @access  Private
+router.delete(
+   '/',
+   passport.authenticate('jwt', { session: false }), 
+   (req, res) => {
+      // req.user.id comes from the token
+      Profile.findOneAndRemove({ user: req.user.id })
+         // gives a promise
+         .then(() => {
+            User.findOneAndRemove({ _id: req.user.id})
+               .then(() => res.json({ success: true }));
+         })
 });
 
 module.exports = router;
