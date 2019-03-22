@@ -69,6 +69,7 @@ router.post("/register", (req, res) => {
 // @route   GET api/users/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
+// ! change to get request? 
 router.post('/login', (req, res) => {
    const { errors, isValid } = validateLoginInput(req.body);
 
@@ -116,7 +117,7 @@ router.get('/current', passport.authenticate('jwt', { session: false }),
       res.json({
          id: req.user.id,
          name: req.user.name,
-         email: req.user.emaill
+         email: req.user.email
       });
    }
 )
