@@ -10,14 +10,24 @@ class Register extends Component {
     errors: {},
   }
 
+  onSubmit = e => {
+    e.preventDefault();
+
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    }
+
+    console.log(newUser)
+  }
+
   onChange = e => {
     // e.target.name accesses the name prop of the inputs (e.target)
     // the [] is accessing that key in state since the e.target.name values match
     // the state object keys
-    console.log('event: ', e);
-    console.log('event target: ', e.target);
-    console.log('event target name: ', e.target.name);
-    this.setState({[e.target.name]: e.target.value})
+    this.setState({[e.target.name]: e.target.value});
   }
 
   render() {
@@ -32,7 +42,7 @@ class Register extends Component {
               <p className="lead text-center">
                 Create your DevConnector account
               </p>
-              <form action="create-profile.html">
+              <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input 
                     type="text" 
@@ -52,7 +62,7 @@ class Register extends Component {
                     value={this.state.email}
                     onChange={this.onChange}
                   />
-                  <small classNameName="form-text text-muted">
+                  <small className="form-text text-muted">
                     This site uses Gravatar so if you want a profile image, use a Gravatar email
                   </small>
                 </div>
