@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import loginUser from '../../redux/actions/authActions';
+import { loginUser } from '../../redux/actions/authActions';
 
 class Login extends Component {
 
@@ -10,6 +10,16 @@ class Login extends Component {
     email: '',
     password: '',
     errors: {}
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+
+    if (nextProps.errors) {
+      this.setState({errors: nextProps.errors});
+    }
   }
 
   onSubmit = e => {
@@ -20,7 +30,7 @@ class Login extends Component {
       password: this.state.password,
     }
 
-    console.log(user)
+    this.props.loginUser(user);
   }
 
   onChange = e => {
@@ -72,8 +82,8 @@ class Login extends Component {
 
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.auth,
-  errors: PropTypes.object.errors
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
