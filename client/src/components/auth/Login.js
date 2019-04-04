@@ -12,7 +12,13 @@ class Login extends Component {
     errors: {}
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
+  componentWillReceiveProps(nextProps) { // * deprecated, look into replacing
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
     }

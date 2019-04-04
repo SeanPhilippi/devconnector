@@ -11,6 +11,8 @@ import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import { logoutUser } from './redux/actions/authActions';
+
 // check for token
 if (localStorage.jwtToken) {
   // set auth token header auth
@@ -19,6 +21,19 @@ if (localStorage.jwtToken) {
   const decoded = jwt_decode(localStorage.jwtToken);
   // set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
+
+  // check for expired token
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    // logout user
+    store.dispatch(logoutUser());
+    // TODO: clear current profile
+    // redirect to login
+    // * other ways to do it, replace may be superior
+    // window.location.href = '/login'; 
+    // window.location = '/login';
+    window.location.replace('/login');
+  }
 }
 
 
