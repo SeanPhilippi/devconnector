@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import store from './store';
-import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser } from './redux/actions/authActions';
+import { setCurrentUser, logoutUser } from './redux/actions/authActions';
+import { clearCurrentProfile } from './redux/actions/profileActions';
+
+import { Provider } from 'react-redux';
+import store from './store';
+
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
-import Register from "./components/auth/Register";
-import Login from "./components/auth/Login";
-import { logoutUser } from './redux/actions/authActions';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+
+
+import Dashboard from './components/dashboard/Dashboard';
+import './App.css';
 
 // check for token
 if (localStorage.jwtToken) {
@@ -27,7 +32,8 @@ if (localStorage.jwtToken) {
   if (decoded.exp < currentTime) {
     // logout user
     store.dispatch(logoutUser());
-    // TODO: clear current profile
+    // Clear current profile
+    store.dispatch(clearCurrentProfile());
     // redirect to login
     // * other ways to do it, replace may be superior
     // window.location.href = '/login'; 
@@ -48,6 +54,7 @@ class App extends Component {
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/dashboard" component={Dashboard} />
             </div>
             <Footer />
           </div>
