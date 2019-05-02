@@ -3,10 +3,14 @@ import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE } from '../actions/
 const initialState = {
   profile: null,
   profiles: null,
-  loading: false,
+  repos: [],
+  loading: true,
+  error: {}
 }
 
 export default (state = initialState, action) => {
+  const { type, payload } = action;
+  
   switch (action.type) {
     case PROFILE_LOADING:
       return {
